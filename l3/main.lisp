@@ -1,0 +1,82 @@
+;; 1. Напишите функцию, которая принимает целое число и возвращает первое четное число, не меньшее аргумента
+(defun f1 (x)
+  (cond ((evenp x) x)
+        (t (+ 1 x))))
+
+;; 2. Напишите функцию, которая принимает число и возвращает число того же знака, но с модулем на 1 больше модуля аргумента
+(defun f2 (x)
+  (cond ((< x 0) (- (+ 1 (- x))))
+        (t (+ 1 x))))
+
+;; 3. Напишите функцию, которая принимает два числа и возвращает список из этих чисел, расположенный по возрастанию
+(defun f3 (x y)
+  (cond ((> x y) (cons y (cons x nil)))
+        (t (cons x (cons y nil)))))
+
+;; 4. Напишите функцию, которая принимает три числа и возвращает T только тогда, когда первое число расположено между вторым и третьим
+(defun f4 (x y z)
+  (cond ((and (< x y) (< y z)) t)
+        (t nil)))
+
+;; 5. Каков результат вычисления следующих выражений
+(and 'fee 'fie 'foe) ;; FOE
+(or nil 'fie 'foe) ;; FIE
+(and (equal 'abc 'abc) 'yes) ;; YES
+(or 'fee 'fie 'foe) ;; FEE
+(and nil 'fie 'foe) ;; NIL
+(or (equal 'abc 'abc) 'yes) ;; T
+
+;; 6. Написать предикат, который принимает два числа-аргумента и возвращает T, если первое число не меньше второго
+(defun f6 (x y)
+  (cond ((>= x y) t)
+        (t nil)))
+
+;; 7. Какой из следующих двух вариантов предиката ошибочен и почему?
+(defun pred1 (x)
+  (and (numberp x) (plusp x))) ;; OK
+
+(defun pred2 (x)
+  (and (plusp x) (numberp x)))
+;; Ошибка. Аргументы and вычисляются в порядке слева направо - сначала будет вычисляться (plusp x), который вернёт ошибку в случае, если x не число.
+
+;; 8. Решить задачу 4, используя для её решения инструкции:
+;; - только if
+;; - только cond
+;; - только and/or
+(defun f8if (x y z)
+  (if (<= y x) nil
+    (if (>= y z) nil t)))
+
+(defun f8cond (x y z)
+  (cond ((<= y x) nil)
+        ((>= y z) nil)
+        (t t)))
+
+(defun f8andor (x y z)
+  (and (> y x) (< y z)))
+
+;; 9. Переписать функцию how-alike, приведённую в лекции и использующую cond, используя только конструкции if, and/or
+(defun how_alike (x y)
+  (cond ((or (= x y) (equal x y)) 'the_same)
+        ((and (oddp x) (oddp y)) 'both_odd)
+        ((and (evenp x) (evenp y)) 'both_even)
+        (t 'different)))
+
+(defun how_alike_if (x y)
+  (if (= x y)
+    'the_same
+    (if (equal x y)
+        'the_same
+        (if (oddp x)
+            (if (oddp y)
+                'both_odd
+                'different)
+            (if (evenp y)
+                'both_even
+                'different)))))
+
+(defun how_alike_andor (x y)
+  (or (and (or (= x y) (equal x y)) 'the_same)
+      (and (and (oddp x) (oddp y)) 'both_odd)
+      (and (and (evenp x) (evenp y)) 'both_even)
+      'different))
