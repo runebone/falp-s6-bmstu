@@ -25,28 +25,28 @@
 (last ()) ; NIL
 
 ; 3. Написать, по крайней мере, два варианта функции, которая возвращает последний элемент своего списка-аргумента
-(defun easy (l) (car (last l)))
+(defun easy (lst) (car (last lst)))
 
-(defun hard (l) ; FIXME (cdr l) DRY
-  (cond ((and (consp l) (not (atom (cdr l))) (consp (cdr l)))
-         (hard (cdr l))) ; cdr until we can't
-        ((null (cdr l))
-         (car l))
-        (t l))) ; l is dotted pair
+(defun hard (lst) ; FIXME (cdr lst) DRY
+  (cond ((and (consp lst) (not (atom (cdr lst))) (consp (cdr lst)))
+         (hard (cdr lst))) ; cdr until we can't
+        ((null (cdr lst))
+         (car lst))
+        (t lst))) ; lst is dotted pair
 
 ; 4. Написать, по крайней мере, два варианта функции, которая возвращает свой список аргументов без последнего элемента
-(defun f4v1 (l)
-  (cond ((and (not (null l)) (atom (cdr l)))
+(defun f4v1 (lst)
+  (cond ((and (not (null lst)) (atom (cdr lst)))
          nil)
-        (t (cons (car l) (f4v1 (cdr l))))))
+        (t (cons (car lst) (f4v1 (cdr lst))))))
 
 ; TODO v2
 
 ; 5. Напишите функицю swap-first-last, которая переставляет в списке-аргументе первый и последний элементы
-(defun swap-first-last (l)
-  (let ((tmp (cons (car l) (car (last l)))))
-    (setf (car l) (cdr tmp))
-    (setf (car (last l)) (car tmp)))
+(defun swap-first-last (lst)
+  (let ((tmp (cons (car lst) (car (last lst)))))
+    (setf (car lst) (cdr tmp))
+    (setf (car (last lst)) (car tmp)))
   l)
 
 ; 6. Написать простой вариант игры в кости, в котором бросаются две правильные кости. Если сумма выпавших очков равна 7 или 11 - выигрыш, если выпало (1,1) или (6,6) - игрок имеет право снова бросить кости, во всех остальных случаях ход переходит ко второму игроку, но запоминается сумма выпавших очков. Если второй игрок не выигрывает абсолютно, то выигрывает тот игрок, у которого больше очков. Результат игры и значения выпавших костей выводить на экран с помощью функции print.
@@ -155,3 +155,27 @@
                             ))))
               )))))))
 
+; 7. Написать функцию, которая по своему списку-аргументу lst определяет, является ли он палиндромом (то есть равны ли lst и (reverse lst))
+(defun listeq (lst1 lst2)
+  (cond ((and (null lst1) (null lst2)) t)
+        ((eql (car lst1) (car lst2))
+         (listeq (cdr lst1) (cdr lst2)))
+        (t nil)))
+
+(defun is-palindrome (lst)
+  (listeq lst (reverse lst)))
+
+; 8. Напишите свои необходимые функции, которые обрабатывают таблицу из 4-х точечных пар: (страна . столица), и возвращают по стране - столицу, а по столице - страну.
+
+; 9. Напишите функцию, которая умножает на заданное число-аргумент первый числовой элемент списка из заданного 3-х элементного списка-аргумента, когда а) все элементы списка - числа, б) элементы списка - любые объекты.
+(defun strange-rec (x lst3 count)
+  (let ((head (car lst3)))
+    (cond ((numberp head)
+           (setf (car lst3) (* x head)))
+          ((> count 1)
+           (strange-rec x (cdr lst3) (- count 1))))))
+
+(defun strange (x lst3)
+  ((lambda ()
+    (strange-rec x lst3 3)
+    lst3)))
