@@ -166,6 +166,20 @@
   (listeq lst (reverse lst)))
 
 ; 8. Напишите свои необходимые функции, которые обрабатывают таблицу из 4-х точечных пар: (страна . столица), и возвращают по стране - столицу, а по столице - страну.
+(defun insert (key value table)
+  (setf table (acons key value table)))
+
+(defun get-value (key table)
+  (cond ((null table) nil)
+        ((eql (car (car table)) key)
+         (cdr (car table)))
+        (t (get-value key (cdr table)))))
+
+(defun get-key (value table)
+  (cond ((null table) nil)
+        ((eql (cdr (car table)) value)
+         (car (car table)))
+        (t (get-key value (cdr table)))))
 
 ; 9. Напишите функцию, которая умножает на заданное число-аргумент первый числовой элемент списка из заданного 3-х элементного списка-аргумента, когда а) все элементы списка - числа, б) элементы списка - любые объекты.
 (defun strange-rec (x lst3 count)
