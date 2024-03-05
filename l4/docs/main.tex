@@ -1,3 +1,23 @@
+\documentclass[a4paper,oneside,14pt]{extarticle}
+
+\include{preamble}
+
+\begin{document}
+
+\include{title}
+\setcounter{page}{2}
+\renewcommand{\contentsname}{СОДЕРЖАНИЕ}
+% \tableofcontents
+
+% -------------------------------------------------------------------
+
+% \newpage
+% \section{Практические задания}
+
+% \newpage
+% \section{Теоретические вопросы}
+
+\begin{lstlisting}
 ; 1. Чем принципиально отличаются функции cons, list, append?
 ; Пусть
 (setf lst1 '(a b c))
@@ -6,7 +26,9 @@
 (cons lst1 lst2) ; ((A B C) D E)
 (list lst1 lst2) ; ((A B C) (D E))
 (append lst1 lst2) ; (A B C D E)
+\end{lstlisting}
 
+\begin{lstlisting}
 ; 2. Каковы результаты вычисления следующих выражений и почему?
 (reverse '(a b c)) ; (C B A)
 ; (reverse l) возвращает список элементов l в обратном порядке, не разрушая структуру l
@@ -23,7 +45,9 @@
 (last '(a b (c))) ; ((C))
 ; (a b (c)) - список, состоящий из трех списковых ячеек; car-указатель последней указывает на список (C)
 (last ()) ; NIL
+\end{lstlisting}
 
+\begin{lstlisting}
 ; 3. Написать, по крайней мере, два варианта функции, которая возвращает последний элемент своего списка-аргумента
 (defun easy (lst) (car (last lst)))
 
@@ -33,7 +57,9 @@
         ((null (cdr lst))
          (car lst))
         (t lst))) ; lst is dotted pair
+\end{lstlisting}
 
+\begin{lstlisting}
 ; 4. Написать, по крайней мере, два варианта функции, которая возвращает свой список аргументов без последнего элемента
 (defun f4v1 (lst)
   (cond ((and (not (null lst)) (atom (cdr lst)))
@@ -44,14 +70,18 @@
   (cond ((and (not (not (not (null lst)))) (atom (cdr lst)))
          nil)
         (t (cons (car lst) (f4v2 (cdr lst))))))
+\end{lstlisting}
 
+\begin{lstlisting}
 ; 5. Напишите функицю swap-first-last, которая переставляет в списке-аргументе первый и последний элементы
 (defun swap-first-last (lst)
   (let ((tmp (cons (car lst) (car (last lst)))))
     (setf (car lst) (cdr tmp))
     (setf (car (last lst)) (car tmp)))
   l)
+\end{lstlisting}
 
+\begin{lstlisting}
 ; 6. Написать простой вариант игры в кости, в котором бросаются две правильные кости. Если сумма выпавших очков равна 7 или 11 - выигрыш, если выпало (1,1) или (6,6) - игрок имеет право снова бросить кости, во всех остальных случаях ход переходит ко второму игроку, но запоминается сумма выпавших очков. Если второй игрок не выигрывает абсолютно, то выигрывает тот игрок, у которого больше очков. Результат игры и значения выпавших костей выводить на экран с помощью функции print.
 (defun throw-one-dice ()
   (+ 1 (random 6)))
@@ -89,7 +119,6 @@
                     (t nr))
               )))
           (t nr))))
-
 
 (defun play-dice ()
   (let ((fpr (cons nil nil))
@@ -157,7 +186,9 @@
                                           )))
                             ))))
               )))))))
+\end{lstlisting}
 
+\begin{lstlisting}
 ; 7. Написать функцию, которая по своему списку-аргументу lst определяет, является ли он палиндромом (то есть равны ли lst и (reverse lst))
 (defun listeq (lst1 lst2)
   (cond ((and (null lst1) (null lst2)) t)
@@ -167,7 +198,9 @@
 
 (defun is-palindrome (lst)
   (listeq lst (reverse lst)))
+\end{lstlisting}
 
+\begin{lstlisting}
 ; 8. Напишите свои необходимые функции, которые обрабатывают таблицу из 4-х точечных пар: (страна . столица), и возвращают по стране - столицу, а по столице - страну.
 (defun insert (key value table)
   (setf table (acons key value table)))
@@ -183,7 +216,9 @@
         ((eql (cdr (car table)) value)
          (car (car table)))
         (t (get-key value (cdr table)))))
+\end{lstlisting}
 
+\begin{lstlisting}
 ; 9. Напишите функцию, которая умножает на заданное число-аргумент первый числовой элемент списка из заданного 3-х элементного списка-аргумента, когда а) все элементы списка - числа, б) элементы списка - любые объекты.
 (defun strange-rec (x lst3 count)
   (let ((head (car lst3)))
@@ -196,3 +231,8 @@
   ((lambda ()
     (strange-rec x lst3 3)
     lst3)))
+\end{lstlisting}
+
+% -------------------------------------------------------------------
+
+\end{document}
