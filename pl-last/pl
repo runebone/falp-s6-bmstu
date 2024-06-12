@@ -77957,11 +77957,9 @@ word_properties([L|Ls], [P|Ps]) :-
 
 same_properties(L1, L2) :- properties(L1, Ps), properties(L2, Ps).
 
-% Основной предикат для генерации списка
 gen_list(Length, MaxValue, List) :-
     gen_list_helper(Length, MaxValue, [], List).
 
-% Вспомогательный предикат с аккумулятором для рекурсии
 gen_list_helper(0, _, Acc, Acc) :- !.
 gen_list_helper(Length, MaxValue, Acc, List) :-
     Length > 0,
@@ -78003,94 +78001,20 @@ gen_word_by_props(RWPs, RW) :-
     noun(RW, Len),
     word_properties(RW, RWPs).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+reverse_solution([W|Ws], [P|Ps], [RW|RWs]) :-
+    length(W, Len),
+    transpose([W|Ws], [T|Ts]),
+    get_best_fit_letter(T, P, RW),
+    NewLen is Len - 1,
+    reverse_solution_helper(Ts, Ps, RWs, NewLen).
 
-% get_random_props(WPs, RWPs) :-
-%     length(WPs, Len),
-%     findall(W, (noun(W, Len)), Ws),
-%     random_element(Ws, RW),
-%     word_properties(RW, RWPs).
+get_best_fit_letter([L|_], Ps, L) :-
+    properties(L, Ps), !.
+get_best_fit_letter([_|Ls], Ps, R) :-
+    get_best_fit_letter(Ls, Ps, R).
 
-% get_first_word_props(WPs, RW1Ps) :-
-%     get_random_props(WPs, RW1Ps).
-
-% get_second_word_props([WP|WPs], [RW1P|RW1Ps], [RW2P|RW2Ps]) :-
-%     same_properties(WP, RW1P)х
-
-% solution(W, RW1, RW2, RW3) :-
-%     properties(W, WPs),
-%     get_first_word_props(WPs, RW1Ps),
-%     get_second_word_props(WPs, RW1Ps, RW2Ps),
-%     get_third_word_props(WPs, RW1Ps, RW2Ps, RW3Ps),
-%     get_word_by_props(RW1, RW1Ps),
-%     get_word_by_props(RW2, RW2Ps),
-%     get_word_by_props(RW3, RW3Ps).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% word_properties([], []).
-% word_properties([L|Ls], [P|Ps]) :-
-%     properties(L, P),
-%     word_properties(Ls, Ps).
-
-% % Получить все множества свойств, которые есть у букв, которых нет у L
-% get_all_different_properties(L, PropertiesList) :-
-%     findall(L2, (letter(L2), not(same_properties(L, L2))), DifferentLetters),
-%     findall(Ps, (member(L2, DifferentLetters), properties(L2, Ps)), AllProperties),
-%     list_to_set(AllProperties, PropertiesList).
-
-% % Получить случайное множество свойств, которого нет у L
-% get_random_different_properties(L, P) :-
-%     get_all_different_properties(L, Ps),
-%     random_element(Ps, P).
-
-% gen_properties_one(L, R1Ps) :-
-%     noun(L, Len),
-%     findall(W, (noun(W, Len)), Ws),
-%     random_element(Ws, RW),
-%     word_properties(RW, Ps).
-
-% gen_properties_two([LP|LPs], [R1P|R1Ps], [R2P|R2Ps]) :-
-%     same_properties(LP, R1P),
-%     get_random_different_properties(LP, R2P),
-%     gen_properties_two(LPs, R1Ps, 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% find_word_by_properties(W, Ps) :-
-%     length(Ps, Len),
-%     noun(W, Len),
-%     word_properties(W, Ps).
-
-% same_properties(L1, L2) :- properties(L1, Ps), properties(L2, Ps).
-
-% % Получить случайную букву с множеством свойств, которого нет у L
-% grlwdp(L, R) :- grdp(L, Ps), letter(R), properties(R, Ps).
-
-% % Получить случайную букву с тем же множеством свойств, что и у L
-% grlwsp(L, R) :- properties(L, Ps), letter(R), properties(R, Ps).
-
-% grl(R) :-
-%     findall(L, letter(L), Ls),
-%     random_element(Ls, R).
-
-% gen_word_one(L, R) :-
-%     noun(L, Len),
-%     findall(W, (noun(W, Len)), Ws),
-%     random_element(Ws, R).
-
-% gen_word_two([], [], []).
-% gen_word_two([L|Ls], [R1|R1s], [R2P|R2Ps]) :-
-%     same_properties(L, R1),
-%     grdp(L, R2P),
-%     gen_word_two(Ls, R1s, R2Ps).
-% gen_word_two([_|Ls], [_|R1s], [R2P|R2Ps]) :-
-%     % different properties
-%     grl(RL),
-%     properties(RL, R2P),
-%     gen_word_two(Ls, R1s, R2Ps).
-
-% gen_word_two(Ls, R2Ps, R2s) :-
-%     gen_word_one(Ls, R1s),
-%     gen_word_two(Ls, R1s, R2Ps),
-%     find_word_by_properties(R2s, R2Ps).
+reverse_solution_helper([], [], [], 0) :- !.
+reverse_solution_helper([W|Ws], [P|Ps], [RW|RWs], Acc) :-
+    get_best_fit_letter(W, P, RW),
+    NewAcc is Acc - 1,
+    reverse_solution_helper(Ws, Ps, RWs, NewAcc).
