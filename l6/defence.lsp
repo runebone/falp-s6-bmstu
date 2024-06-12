@@ -65,7 +65,20 @@
                             (cons (cdar lst)
                                   (cdr lst))) res))))
         ((numberp (car lst))
-         (f* (cdr lst) (insert* (car lst) res nil)))))
+         (f* (cdr lst) (insert* (car lst) res nil)))
+        ((atom (car lst)) (f* (cdr lst) res))
+        ))
 
 (defun f (lst)
   (f* lst nil))
+
+(load "~/quicklisp/setup.lisp")
+(ql:quickload "fiveam")
+
+(fiveam:test test1
+  (fiveam:is (equal (f '(((2 ((3)) 9) 8 ((7)) 5 (4) 1))) '(1 2 3 4 5 7 8 9))))
+
+(fiveam:test test2
+  (fiveam:is (equal (f '(1 2 -3 a 4 b -6)) '(-6 -3 1 2 4))))
+
+(fiveam:run!)
