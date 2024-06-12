@@ -1,5 +1,4 @@
-:- use_module(library(clpfd)).
-:- use_module(library(random)).
+use_module(library(clpfd)). % for transpose
 
 noun([а, д], 2).
 noun([а, з], 2).
@@ -77967,11 +77966,12 @@ gen_list_helper(Length, MaxValue, Acc, List) :-
     NewLength is Length - 1,
     gen_list_helper(NewLength, MaxValue, [RandomValue|Acc], List).
 
-solution(W, RWs, N) :-
+solution(W, RRWs, N, List) :-
     length(W, Len),
     gen_list(Len, N, List),
     word_properties(W, WPs),
-    gen_words(WPs, List, N, RWs).
+    gen_words(WPs, List, N, RWs),
+    reverse(RWs, RRWs).
 
 gen_words(WPs, L, N, RWs) :-
     gen_words_props(WPs, L, N, RWPss),
@@ -78018,3 +78018,8 @@ reverse_solution_helper([W|Ws], [P|Ps], [RW|RWs], Acc) :-
     get_best_fit_letter(W, P, RW),
     NewAcc is Acc - 1,
     reverse_solution_helper(Ws, Ps, RWs, NewAcc).
+
+% ?- W = [е,л,ь], solution(W, RWs, 3, List).
+% ?- W = [в,р,е,м,я], solution(W, RWs, 3, List).
+% ?- W = [е,л,ь], word_properties(W, WPs), solution(W, RWs, 3, List), reverse_solution(RWs, WPs, RS).
+% ?- W = [в,р,е,м,я], word_properties(W, WPs), solution(W, RWs, 3, List), reverse_solution(RWs, WPs, RS).
