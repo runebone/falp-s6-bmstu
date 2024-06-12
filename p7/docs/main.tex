@@ -1,0 +1,80 @@
+\documentclass[a4paper,oneside,14pt]{extarticle}
+
+\include{preamble}
+
+\begin{document}
+
+\include{title}
+\setcounter{page}{2}
+\renewcommand{\contentsname}{СОДЕРЖАНИЕ}
+% \tableofcontents
+
+% -------------------------------------------------------------------
+
+\begin{lstlisting}
+domains
+  name    = symbol.
+  city    = symbol.
+  street  = symbol.
+  phone   = symbol.
+  address = data(city, street, integer, integer).
+  model   = symbol.
+  color   = symbol.
+  carnum  = symbol.
+  cost    = symbol.
+
+predicates
+  nondeterm phonebook(name, phone, address).
+  nondeterm car(name, model, color, cost, carnum).
+
+clauses
+  phonebook("f0", "00000000000", data("c0", "s0", 0, 0)).
+  phonebook("f0", "10000000000", data("c0", "s0", 0, 0)).
+  phonebook("f0", "20000000000", data("c0", "s0", 0, 0)).
+  phonebook("f1", "00000000001", data("c0", "s1", 1, 1)).
+  phonebook("f1", "10000000001", data("c0", "s1", 1, 1)).
+  phonebook("f1", "20000000001", data("c1", "s1", 1, 1)).
+  phonebook("f2", "00000000002", data("c2", "s2", 2, 2)).
+  phonebook("f3", "00000000003", data("c3", "s3", 3, 3)).
+  
+  car("f0", "m0", "c0", "0000000", "nu000mber").
+  car("f0", "m1", "c1", "0000001", "nu001mber").
+  car("f0", "m2", "c2", "0000002", "nu002mber").
+  car("f1", "m1", "c3", "0000003", "nu003mber").
+  car("f1", "m2", "c3", "0000004", "nu004mber").
+  car("f2", "m3", "c4", "0000005", "nu005mber").
+
+goal
+  phonebook(Surname, Phone, data(City, _, _, _)), car(Surname, "m3", "c4", _, _).
+\end{lstlisting}
+
+% \begin{lstlisting}
+% % Факты
+% phone_book_record(фамилия0, 000, address(город0, улица0, 0, 0)).
+% phone_book_record(фамилия0, 100, address(город0, улица0, 0, 0)).
+% phone_book_record(фамилия0, 200, address(город0, улица0, 0, 0)).
+% phone_book_record(фамилия1, 001, address(город0, улица1, 1, 1)).
+% phone_book_record(фамилия1, 101, address(город0, улица1, 1, 1)).
+% phone_book_record(фамилия1, 201, address(город1, улица1, 1, 1)).
+% phone_book_record(фамилия2, 002, address(город2, улица2, 2, 2)).
+% phone_book_record(фамилия3, 003, address(город3, улица3, 3, 3)).
+
+% car_record(фамилия0, марка0, цвет0, 000, но000мер).
+% car_record(фамилия0, марка1, цвет1, 001, но001мер).
+% car_record(фамилия0, марка2, цвет2, 002, но002мер).
+% car_record(фамилия1, марка1, цвет3, 003, но003мер).
+% car_record(фамилия1, марка2, цвет3, 004, но004мер).
+% car_record(фамилия2, марка3, цвет4, 005, но005мер).
+
+% % Вопрос
+% ?- phone_book_record(Surname, Phone, address(City, _, _, _)), car_record(Surname, марка3, цвет4, _, _).
+
+% % Ответ
+% Surname = фамилия2,
+% Phone = 2,
+% City = город2.
+% \end{lstlisting}
+
+% -------------------------------------------------------------------
+
+\end{document}
