@@ -77954,6 +77954,11 @@ word_properties([L|Ls], [P|Ps]) :-
     properties(L, P),
     word_properties(Ls, Ps).
 
+words_properties([], []).
+words_properties([W|Ws], [WP|WPs]) :-
+    word_properties(W, WP),
+    words_properties(Ws, WPs).
+
 same_properties(L1, L2) :- properties(L1, Ps), properties(L2, Ps).
 
 gen_list(Length, MaxValue, List) :-
