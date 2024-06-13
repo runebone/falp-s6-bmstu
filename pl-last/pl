@@ -78028,3 +78028,4 @@ reverse_solution_helper([W|Ws], [P|Ps], [RW|RWs], Acc) :-
 % ?- W = [в,р,е,м,я], solution(W, RWs, 3, List).
 % ?- W = [е,л,ь], word_properties(W, WPs), solution(W, RWs, 3, List), reverse_solution(RWs, WPs, RS).
 % ?- W = [в,р,е,м,я], word_properties(W, WPs), solution(W, RWs, 3, List), reverse_solution(RWs, WPs, RS).
+% ?- W = [й,о,д], solution(W, Q, 3, L), word_properties(W, WPs), words_properties(Q, QPs).
