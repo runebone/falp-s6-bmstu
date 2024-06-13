@@ -1,4 +1,4 @@
-[main].
+:- consult(main).
 
 :- begin_tests(my_tests).
 
